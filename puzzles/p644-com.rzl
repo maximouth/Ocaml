@@ -1,0 +1,9 @@
+Right on red	# title
+16		# board width
+12		# board height
+7		# robot starting column
+6		# robot starting row
+0		# robot starting direction
+0		# allowed commands
+5,4,0,0,0	# subs sizes
+.....................................................gbbbbbbg........b......b........b......b........b.bbbbbg........b.............B.grg...........b..b............gbbg.........................
