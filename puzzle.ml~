@@ -1,5 +1,0 @@
-type direction =
-| nord
-| sud
-| est
-| ouest
