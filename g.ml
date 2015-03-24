@@ -36,7 +36,7 @@ let init (w : int) (h : int) (c : int) : unit =
     !sprite_cursor
     (Sdlvideo.map_RGB !sprite_cursor Sdlvideo.yellow);
   Sdlttf.init ();
-  font := Sdlttf.open_font "IMMORTAL.ttf" 50
+  font := Sdlttf.open_font "font.ttf" 50
   
 
 let quit () : unit =
