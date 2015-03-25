@@ -61,12 +61,36 @@ let rec map_string (s : string) (i : int) : cell list =
   | 'r' -> (Cell (false, Red))::(map_string s (i+1))
   | 'g' -> (Cell (false, Green))::(map_string s (i+1))
   | 'b' -> (Cell (false, Blue))::(map_string s (i+1))
-  | _ -> failwith "mauvaise definition de la map"
+  | c ->  failwith "mauvaise map"
+  (*Printf.printf "mauvaise map %c" c; [] *)
   )
 ;;
 
 let map_of_string (s : string) : cell list =
   map_string s 0;;
+
+let string_of_col (c : color) : string =
+  match c with
+  | Empty -> "X"
+  | Red -> "R"
+  | Green -> "G"
+  | Blue -> "B"
+  | _ -> failwith "mauvaise couleur"
+
+
+let affiche_map (map : map) : string =
+  let nbcol = map.col in
+
+  let rec loop (i : int) (map : cell list)  =
+    match map with
+    | [] -> ""
+    | Cell (b,c)::map' -> (if i = nbcol
+      then (string_of_col c)^"\n"^(loop 0 map')
+      else (string_of_col c)^(loop (i+1) map')
+    )      
+  in
+  loop 0 map.map
+;;
 
 (**** fin utilitaires ****)
 
@@ -95,6 +119,7 @@ let parse (s : string) : t =
   let stcol = input_line f in
   let stl = input_line f in
   let dir = input_line f in
+  let ukn = input_line f in
   let ff = split (input_line f) in
   let mapp = input_line f in
   let t = {
@@ -109,8 +134,11 @@ let parse (s : string) : t =
 
 	};
   } in
+  close_in f;
   t;;
   
-
-      
-  
+let main =
+  let t = parse "./puzzles/p644.rzl" in
+  ()
+  (*Printf.printf "%s" (affiche_map t.map)
+  *)
