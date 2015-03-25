@@ -19,7 +19,7 @@ type cell =
 
 type map = {
   ligne : int;
-  col : int;
+  col : int; 
   map : cell list}
 ;;
 
@@ -28,11 +28,7 @@ type t = {
   cdep : int;
   ldep : int;
   direction : direction;
-  f1 : int list;
-  f2 : int list;
-  f3 : int list;
-  f4 : int list;
-  f5 : int list;
+  f : int list;
   map : map;
 };;
 
