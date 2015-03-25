@@ -38,6 +38,12 @@ type t = {
 
 (***** utilitaires ***)
 
+let rec print_list (s :string list) : unit =
+  match s with
+  | [] -> Printf.printf "\n"
+  | s::l' -> Printf.printf "%s" s;
+    print_list l'
+
 let dir_of_string (s : string) : direction =
   match s with
   | "3" -> North
@@ -53,8 +59,9 @@ let rec intList_of_str (s : string list) : int list =
   | i::s' -> (int_of_string i)::(intList_of_str s')
 ;;
 
+
 let rec map_string (s : string) (i : int) : cell list =
-  if i > String.length s
+  if i >= String.length s
   then []
   else ( match s.[i] with
   | '.' -> (Cell (false, Empty))::(map_string s (i+1))
@@ -84,7 +91,7 @@ let affiche_map (map : map) : string =
   let rec loop (i : int) (map : cell list)  =
     match map with
     | [] -> ""
-    | Cell (b,c)::map' -> (if i = nbcol
+    | Cell (b,c)::map' -> (if i = (nbcol -1)
       then (string_of_col c)^"\n"^(loop 0 map')
       else (string_of_col c)^(loop (i+1) map')
     )      
@@ -109,7 +116,7 @@ let split (s : string) : string list =
   split_aux s 0 0 [] 
 ;;
 
-split "un;deux;trois";;
+split "0;5;4";;
 
 let parse (s : string) : t =
   let f = open_in s in
@@ -120,25 +127,37 @@ let parse (s : string) : t =
   let stl = input_line f in
   let dir = input_line f in
   let ukn = input_line f in
-  let ff = split (input_line f) in
+  let ff = input_line f in
   let mapp = input_line f in
+
+  Printf.printf "nom %s\n" nom;
+  Printf.printf "start col %s\n" stcol;
+  Printf.printf "start l %s\n" stl;
+  Printf.printf "dir %s\n" dir;
+  Printf.printf "col %s\n" col;
+  Printf.printf "l %s\n" l;
+  Printf.printf "map %s\n" mapp;
+  Printf.printf "f %s\n" ff;
+  print_list (split ff);
+ 
+
   let t = {
   nom = nom;
   cdep = int_of_string stcol;
   ldep = int_of_string stl;
-  direction = dir_of_string dir;
-  f = intList_of_str ff;
+  direction =  dir_of_string dir;
+  f = intList_of_str (split ff);
   map = { ligne = int_of_string l;
 	  col = int_of_string col;
 	  map = map_of_string mapp
 
 	};
   } in
+  
   close_in f;
   t;;
   
 let main =
   let t = parse "./puzzles/p644.rzl" in
-  ()
-  (*Printf.printf "%s" (affiche_map t.map)
-  *)
+    Printf.printf "%s" (affiche_map t.map)
+  
