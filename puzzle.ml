@@ -68,7 +68,10 @@ let rec map_string (s : string) (i : int) : cell list =
   | 'r' -> (Cell (false, Red))::(map_string s (i+1))
   | 'g' -> (Cell (false, Green))::(map_string s (i+1))
   | 'b' -> (Cell (false, Blue))::(map_string s (i+1))
-  | c ->  failwith "mauvaise map"
+  | 'R' -> (Cell (true, Red))::(map_string s (i+1))
+  | 'G' -> (Cell (true, Green))::(map_string s (i+1))
+  | 'B' -> (Cell (true, Blue))::(map_string s (i+1))
+  | _ ->  failwith "mauvaise map"
   (*Printf.printf "mauvaise map %c" c; [] *)
   )
 ;;
