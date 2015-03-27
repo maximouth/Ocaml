@@ -62,10 +62,15 @@ else:
   f.write(str(puzzle['height']) + ('\n' if nocom else '\t\t# board height\n'))
   f.write(str(puzzle['robotCol']) + ('\n' if nocom else '\t\t# robot starting column\n'))
   f.write(str(puzzle['robotRow']) + ('\n' if nocom else '\t\t# robot starting row\n'))
-  f.write(str(puzzle['robotDir']) + ('\n' if nocom else '\t\t# robot starting direction\n'))
+  f.write(str(puzzle['robotDir']) + ('\n' if nocom else '\t\t# robot starting direction (0:East,1:South,2:West,3;North)\n'))
   f.write(str(puzzle['allowedCommands']) + ('\n' if nocom else '\t\t# allowed commands\n'))
   f.write(puzzle['subs'] + ('\n' if nocom else '\t# subs sizes\n'))
   f.write(puzzle['board'])
+  if not nocom:
+      f.write('\n')
+      f.write('# . : empty cell\n')
+      f.write('# r (resp. g, b) : red (resp. green, blue) cell without star\n')
+      f.write('# R (resp. G, B) : red (resp. green, blue) cell *with* star')
   f.close()
 
 print('puzzle exported in "' + fname + '"')

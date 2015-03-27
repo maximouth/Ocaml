@@ -27,7 +27,7 @@ type state = { pc       : offset;              (* pointeur sur l'instruction cou
                map      : Puzzle.map;          (* map du puzzle *)
                pos      : pos;                 (* position courante du robot *)
                dir      : Puzzle.direction;    (* direction courante du robot *)
-               code     : offset bc IntMap.t;  (* bytecode à exécuter *)
+               code     : bc array;            (* bytecode à exécuter *)
              }
 
 (* fonction de conversion d'une instruction bytecode en string pour le debuggage *)
@@ -36,7 +36,7 @@ val string_of_bc: ('a -> string) -> 'a bc -> string
 (* initialisation de la VM à partir d'un puzzle *)
 val init : Puzzle.t -> state
 (* ajout du code Robozzle-ml à exécuter dans la VM *)
-val set_code : state -> offset bc IntMap.t -> state
+val set_code : state -> bc array -> state
 (* initialisation de la VM *)
 val init_stack : state -> int -> state
 

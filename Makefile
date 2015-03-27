@@ -1,23 +1,30 @@
 OC = ocamlfind ocamlc
 OL = ocamlfind ocamlc
 LIBS = sdl,sdl.sdlgfx,sdl.sdlimage,sdl.sdlttf
-OBJS = puzzle.cmo g.cmo main.cmo
-INTF = puzzle.cmi g.cmi
 TARGET = robozzle-ml
 
 all: $(TARGET)
 
-robozzle-ml: $(OBJS)
-	$(OL) -o $@ -package $(LIBS) -linkpkg $^
+robozzle-ml: puzzle.cmo puzzle.cmi g.cmo g.cmi vm.cmo vm.cmi main.cmo
+	$(OL) -o $@ -package $(LIBS) -linkpkg puzzle.cmo g.cmo main.cmo
 
-%.cmo: %.ml
-	$(OC) -package $(LIBS) -c $<
+puzzle.cmo: puzzle.ml puzzle.cmi
+	$(OC) -package $(LIBS) -c puzzle.ml
+
+g.cmo: g.ml g.cmi
+	$(OC) -package $(LIBS) -c g.ml
+
+vm.cmo: vm.ml vm.mli
+	$(OC) -package $(LIBS) -c vm.ml
+
+main.cmo: main.ml
+	$(OC) -package $(LIBS) -c main.ml
 
 %.cmi: %.mli
-	$(OC) -package $(LIBS) -c %<
+	$(OC) -package $(LIBS) -c $<
 
 clean:
-	rm *.cmi *.cmo
+	rm -rf *.cmi *.cmo
 
 cleanall: clean
-	rm $(TARGET)
+	rm -rf $(TARGET)
