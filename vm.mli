@@ -27,7 +27,7 @@ type state = { pc       : offset;              (* pointeur sur l'instruction cou
                map      : Puzzle.map;          (* map du puzzle *)
                pos      : pos;                 (* position courante du robot *)
                dir      : Puzzle.direction;    (* direction courante du robot *)
-               code     : bc array;            (* bytecode à exécuter *)
+               code     : (offset bc) array;   (* bytecode à exécuter *)
              }
 
 (* fonction de conversion d'une instruction bytecode en string pour le debuggage *)
