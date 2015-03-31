@@ -31,8 +31,7 @@ type state = { pc       : offset;              (* pointeur sur l'instruction cou
                map      : Puzzle.map;          (* map du puzzle *)
                pos      : pos;                 (* position courante du robot *)
                dir      : Puzzle.direction;    (* direction courante du robot *)
-	       (* pas string mais quoi?? *)
-               code     : string bc array;            (* bytecode à exécuter *)
+               code     : offset bc array;            (* bytecode à exécuter *)
              }
 
 
@@ -111,5 +110,29 @@ let is_out_of_map (s : state) : bool =
     else
       false)
 ;;
+
+(*** � verifer!  ***)
+let is_out_of_instr (s : state) : bool =
+  if ((s.pc) = (Array.length s.code))
+  then
+    true
+  else
+    false
+;;
+
+
+(***  2.4  ***)
+
+let init (t: Puzzle.t) : state =
+  let s = {
+    pc = 0;
+    star = 0 (* fonction pour compter le nb d'etoile *);
+    stack = [];
+    map = t.map;
+    pos = (t.cdep,t.ldep);
+    dir = t.direction;
+    code = Array.make 0 Exit (* ??  *)
+  } in
+  s;;
 
 
