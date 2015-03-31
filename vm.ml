@@ -1,3 +1,5 @@
+open Puzzle;;
+
 (* definition des types *)
 
 (* sens de la rotation pour l'instruction Rotate *)
@@ -92,7 +94,7 @@ let is_solved (s : state) : bool =
 	(if b then
 	    false
 	 else
-	    map l)
+	    loop l)
     )
   in
   loop map
@@ -109,4 +111,5 @@ let is_out_of_map (s : state) : bool =
     else
       false)
 ;;
+
 
