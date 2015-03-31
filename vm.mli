@@ -36,7 +36,7 @@ val string_of_bc: ('a -> string) -> 'a bc -> string
 (* initialisation de la VM à partir d'un puzzle *)
 val init : Puzzle.t -> state
 (* ajout du code Robozzle-ml à exécuter dans la VM *)
-val set_code : state -> bc array -> state
+val set_code : state -> string bc array -> state
 (* initialisation de la VM *)
 val init_stack : state -> int -> state
 

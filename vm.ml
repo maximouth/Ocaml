@@ -98,3 +98,15 @@ let is_solved (s : state) : bool =
   loop map
 ;;
   
+let is_out_of_map (s : state) : bool =
+  let p = get_pos s in
+  let c =  get_cell p s.map in
+  match c with
+  | Cell (b,c) -> (
+    if (c = Empty)
+    then
+      true
+    else
+      false)
+;;
+
