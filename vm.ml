@@ -76,3 +76,25 @@ let get_color (cell : Puzzle.cell) : Puzzle.color =
 let is_empty (Cell (b,c) : Puzzle.cell) : bool =
   b
 ;;
+
+(***  fonctions de jeu  ***)
+
+let is_solved (s : state) : bool =
+  let map = s.map.map in
+
+  let rec loop map =
+    match map with
+    | [] -> true
+    | c::l -> (
+      match c with
+      (***  ne peut pas acceder a une cell...  ***)
+      | Cell (b,c) ->
+	(if b then
+	    false
+	 else
+	    map l)
+    )
+  in
+  loop map
+;;
+  
