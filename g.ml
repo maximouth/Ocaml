@@ -79,7 +79,7 @@ let draw_robot (pos : pos) (dir : Puzzle.direction) (mstep : int) : unit =
   let sx = List.nth robot_sprites (mstep mod robot_nb_sprites)
   and sy = match dir with
     | Puzzle.South -> 1
-    | Puzzle.East  -> 2
+    | Puzzle.Est  -> 2
     | Puzzle.North -> 3
     | Puzzle.West  -> 4
   in blit_sprite pos sx sy
@@ -88,7 +88,7 @@ let draw_arrow ((x,y) : pos) (dir : Puzzle.direction) : unit =
   let idx = match dir with
     | Puzzle.North -> 0
     | Puzzle.West  -> 1
-    | Puzzle.East  -> 2
+    | Puzzle.Est  -> 2
     | Puzzle.South -> failwith "should not happen..."
   in Sdlvideo.blit_surface
     ~src:!sprites_lang

@@ -1,27 +1,37 @@
-OC = ocamlfind ocamlc
-OL = ocamlfind ocamlc
-LIBS = sdl,sdl.sdlgfx,sdl.sdlimage,sdl.sdlttf
+OC =  ocamlfind ocamlc
+OL =  ocamlfind ocamlc
+
+# OcamlSDL libraries path. Assume using opam
+OPAM_LIBS_DIR = $(shell opam config var lib)
+ifeq ($(OPAM_LIBS_DIR),)
+  SDL_DIR=+sdl
+else
+	SDL_DIR =$(OPAM_LIBS_DIR)/sdl
+endif
+
+
+#LIBS = sdl,sdl.sdlgfx,sdl.sdlimage,sdl.sdlttf
 TARGET = robozzle-ml
 
 all: $(TARGET)
 
 robozzle-ml: puzzle.cmo puzzle.cmi g.cmo g.cmi vm.cmo vm.cmi main.cmo
-	$(OL) -o $@ -package $(LIBS) -linkpkg puzzle.cmo vm.cmo g.cmo main.cmo
+	$(OL) -o $@ -I $(SDL_DIR) $(LIBS) -linkpkg puzzle.cmo g.cmo main.cmo
 
 puzzle.cmo: puzzle.ml puzzle.cmi
-	$(OC) -package $(LIBS) -c puzzle.ml
+	$(OC) -I $(SDL_DIR) $(LIBS) -c puzzle.ml
 
 g.cmo: g.ml g.cmi
-	$(OC) -package $(LIBS) -c g.ml
+	$(OC) -I $(SDL_DIR) $(LIBS) -c g.ml
 
 vm.cmo: vm.ml vm.cmi
-	$(OC) -package $(LIBS) -c vm.ml
+	$(OC) -I $(SDL_DIR) $(LIBS) -c vm.ml
 
 main.cmo: main.ml
-	$(OC) -package $(LIBS) -c main.ml
+	$(OC) -I $(SDL_DIR)  $(LIBS) -c main.ml
 
 %.cmi: %.mli
-	$(OC) -package $(LIBS) -c $<
+	$(OC) -I $(SDL_DIR) $(LIBS) -c $<
 
 clean:
 	rm -rf *.cmi *.cmo
