@@ -1,3 +1,4 @@
+
 type pos = int * int
 
 let screen = ref (Obj.magic None)
@@ -123,5 +124,7 @@ let draw_text ((x,y) : pos) (s : string) : unit =
 let sync () : unit =
   Sdlvideo.flip !screen
 
+    (*
 let delay (u : int) : unit =
   Sdltimer.delay u
+  *)

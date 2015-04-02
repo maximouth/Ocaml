@@ -136,3 +136,6 @@ let init (t: Puzzle.t) : state =
   s;;
 
 
+let draw (offx :int) (offy : int) (csize : int) (nb_step : int) (anim_frame : state) : unit =
+  G.init offx offy csize;
+  G.sync();;
