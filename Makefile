@@ -9,14 +9,14 @@ else
 	SDL_DIR =$(OPAM_LIBS_DIR)/sdl
 endif
 
-
-#LIBS = sdl,sdl.sdlgfx,sdl.sdlimage,sdl.sdlttf
+ 
+LIBS = $(SDL_DIR)/sdl.cma $(SDL_DIR)/sdlttf.cma $(SDL_DIR)/sdlgfx.cma $(SDL_DIR)/sdlloader.cma bigarray.cma
 TARGET = robozzle-ml
 
 all: $(TARGET)
 
 robozzle-ml: puzzle.cmo puzzle.cmi g.cmo g.cmi vm.cmo vm.cmi main.cmo  
-	$(OL) -o $@ -I $(SDL_DIR)  puzzle.cmo g.cmo main.cmo
+	$(OL) -custom -o $@ -I $(SDL_DIR)  $(LIBS) puzzle.cmo g.cmo vm.cmo main.cmo
 
 sdltimer.cmo: sdltimer.ml sdltimer.cmi
 	$(OC) -I $(SDL_DIR)  -c sdltimer.ml
