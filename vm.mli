@@ -55,7 +55,7 @@ val get_pos : state -> pos
 val get_map : state -> Puzzle.map
 val get_dir : state -> Puzzle.direction
 
-(*  
+  
 (* fonction d'affichage de la map *)
 val draw : int -> int -> int -> state -> int -> int -> unit
-*)
+

@@ -33,3 +33,5 @@ type t = {
 };;
 
 val split : string -> string list
+;;
+val parse : string -> t 
