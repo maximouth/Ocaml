@@ -35,7 +35,7 @@ val draw_text   : pos -> string -> unit
 (* synchronisation de l'affichage *)
 val sync  : unit -> unit
 
-(*
+
 (* attente en millisecondes *)
 val delay : int -> unit
-*)
+

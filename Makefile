@@ -9,8 +9,8 @@ else
 	SDL_DIR =$(OPAM_LIBS_DIR)/sdl
 endif
 
- 
-LIBS = $(SDL_DIR)/sdl.cma $(SDL_DIR)/sdlttf.cma $(SDL_DIR)/sdlgfx.cma $(SDL_DIR)/sdlloader.cma bigarray.cma
+
+LIBS = $(SDL_DIR)/sdl.cma $(SDL_DIR)/sdlttf.cma $(SDL_DIR)/sdlgfx.cma $(SDL_DIR)/sdlloader.cma $(SDL_DIR)/sdltimer.cma bigarray.cma
 TARGET = robozzle-ml
 
 all: $(TARGET)

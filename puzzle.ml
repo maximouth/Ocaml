@@ -12,8 +12,7 @@ type color =
   | Red
   | Blue
   | Green
-  | Yellow
-;;
+ ;;
 
 type cell =
 | Cell of (bool*color)
@@ -133,23 +132,12 @@ let parse (s : string) : t =
   let ff = input_line f in
   let mapp = input_line f in
 
-  Printf.printf "nom %s\n" nom;
-  Printf.printf "start col %s\n" stcol;
-  Printf.printf "start l %s\n" stl;
-  Printf.printf "dir %s\n" dir;
-  Printf.printf "col %s\n" col;
-  Printf.printf "l %s\n" l;
-  Printf.printf "map %s\n" mapp;
-  Printf.printf "f %s\n" ff;
-  print_list (split ff);
- 
-
   let t = {
   nom = nom;
-  cdep = int_of_string stcol;
-  ldep = int_of_string stl;
-  direction =  dir_of_string dir;
-  f = intList_of_str (split ff);
+    cdep = int_of_string stcol;
+    ldep = int_of_string stl;
+    direction = dir_of_string dir;
+    f = intList_of_str (split ff);
   map = { ligne = int_of_string l;
 	  col = int_of_string col;
 	  map = map_of_string mapp
@@ -159,8 +147,8 @@ let parse (s : string) : t =
   
   close_in f;
   t;;
-  
-let main =
+(* 
+let test =
   let t = parse "./puzzles/p644.rzl" in
     Printf.printf "%s" (affiche_map t.map)
-  
+*)

@@ -10,7 +10,6 @@ type color =
   | Red
   | Blue
   | Green
-  | Yellow
 ;;
 
 type cell =

@@ -135,7 +135,44 @@ let init (t: Puzzle.t) : state =
   } in
   s;;
 
+let draw_map (m : map) : unit =
+  let col = m.col  in
+
+  let rec loop (i : int)  (l : int) (list : cell list) =
+  
+    match list with
+    | [] -> ()
+    |Cell (true,c)::list' -> 
+      (if (i = col)
+       then (
+	 G.draw_cell (32*(l+1),0) c;
+	 G.draw_star (32*(l+1),0);
+	  loop 0 (l+1) list'
+       )
+       else (
+	 G.draw_cell (32*l,32*i) c;
+	 G.draw_star (32*l,32*i);
+        loop (i+1) l list'
+       )
+      )
+    | Cell (false,c)::list' ->
+      (if (i = (col))
+       then (
+	 G.draw_cell (32*(l+1),0) c;
+	 loop 0 (l+1) list'
+       )
+       else (
+	 G.draw_cell (32*l,32*i) c;
+	 loop (i+1) l list'
+       )
+      )
+	
+  in
+  loop 0 0 m.map  
+;;
+  
 
 let draw (offx :int) (offy : int) (csize : int) (state : state)(nb_step : int)(anim_frame : int) : unit =
   G.init offx offy csize;
+  draw_map state.map;
   G.sync();;
