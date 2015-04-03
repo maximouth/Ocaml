@@ -136,34 +136,34 @@ let init (t: Puzzle.t) : state =
   s;;
 
 let draw_map (m : map) : unit =
-  let col = m.col  in
+  let cl = m.col   in
 
   let rec loop (i : int)  (l : int) (list : cell list) =
   
     match list with
     | [] -> ()
-    |Cell (true,c)::list' -> 
-      (if (i = col)
+    | Cell (true,col)::l' ->
+      (if (i = cl)
        then (
-	 G.draw_cell (32*(l+1),0) c;
-	 G.draw_star (32*(l+1),0);
-	  loop 0 (l+1) list'
+	 G.draw_cell (0,32*(l+1)) col;
+	 G.draw_star (0,32*(l+1));
+	 loop 1 (l+1) l'
        )
        else (
-	 G.draw_cell (32*l,32*i) c;
-	 G.draw_star (32*l,32*i);
-        loop (i+1) l list'
+	 G.draw_cell (32*i,32*l) col;
+	 G.draw_star (32*i,32*l);
+	 loop (i+1) l l'
        )
       )
-    | Cell (false,c)::list' ->
-      (if (i = (col))
+    | Cell (false,col)::l' ->
+      (if (i = cl)
        then (
-	 G.draw_cell (32*(l+1),0) c;
-	 loop 0 (l+1) list'
+	 G.draw_cell (0,32*(l+1)) col;
+	 loop 1 (l+1) l'
        )
        else (
-	 G.draw_cell (32*l,32*i) c;
-	 loop (i+1) l list'
+	 G.draw_cell (32*i,32*l) col;
+	 loop (i+1) l l'
        )
       )
 	
