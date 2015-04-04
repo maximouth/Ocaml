@@ -173,6 +173,64 @@ let draw_map (m : map) : unit =
   
 
 let draw (offx :int) (offy : int) (csize : int) (state : state)(nb_step : int)(anim_frame : int) : unit =
+  let pos_rb = match state.pos with
+    | (x,y) ->(32*x,32*y)
+  in
   G.init offx offy csize;
   draw_map state.map;
-  G.sync();;
+  G.draw_robot pos_rb state.dir 9;;
+
+
+let rec draw_ligne (nb : int) (l : int) : unit =
+  match nb with
+  | 0 -> ()
+  | n ->
+    G.draw_cell ((18*32) + (32*nb), l) Empty;
+    G.sync();
+    draw_ligne (nb-1) l;;
+
+
+let rec draw_name (f : int list) (i : int) : unit =
+  match f with
+  | [] -> ()
+  | e::l' ->
+    (match e with
+    | 0 -> ()
+    | _ -> (match i with
+      | 1 ->
+	G.draw_text ( 17*32,10) "F1";
+	G.sync();
+	draw_name l' (i+1)
+      | 2 -> 
+	G.draw_text ( 17*32,25+45) "F2" ;
+	G.sync();
+	draw_name l' (i+1) 
+      | 3 -> 
+	G.draw_text ( 17*32,70+45) "F3";
+	G.sync();
+	draw_name l' (i+1)
+      | 4 -> 
+	G.draw_text ( 17*32,115+45) "F4";
+	G.sync();
+	draw_name l' (i+1)
+      | 5 -> 
+	G.draw_text ( 17*32,160 + 45) "F5";
+	G.sync();
+	draw_name l' (i+1)
+      |_ -> failwith "cas impossible"
+    )
+    )
+
+      
+let draw_f (t : Puzzle.t) : unit =
+  let f = t.f in
+
+  let rec loop (l : int list) (i : int) : unit =
+    match l with
+    | [] -> ()
+    | e::l' ->
+      draw_ligne e i;
+      loop l' (i+55)
+  in
+  draw_name f 1;
+  loop f 30;;
