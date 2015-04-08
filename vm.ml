@@ -25,12 +25,12 @@ type 'a bc =
   | Exit
 
 (* état de la machine virtuelle Robozzle-ml *)
-type state = { pc       : offset;              (* pointeur sur l'instruction courante *)
+type state = {mutable pc       : offset;              (* pointeur sur l'instruction courante *)
                star     : int;                 (* nombres d'étoiles restantes dans la map *)
                stack    : offset list;         (* pile d'appels *)
                map      : Puzzle.map;          (* map du puzzle *)
                pos      : pos;                 (* position courante du robot *)
-               dir      : Puzzle.direction;    (* direction courante du robot *)
+              mutable dir      : Puzzle.direction;    (* direction courante du robot *)
                code     : offset bc array;            (* bytecode à exécuter *)
              }
 
@@ -196,7 +196,8 @@ let rec draw_name (f : int list) (i : int) : unit =
   | e::l' ->
     (match e with
     | 0 -> ()
-    | _ -> (match i with
+    | _ ->
+      (match i with
       | 1 ->
 	G.draw_text ( 17*32,10) "F1";
 	G.sync();
@@ -206,25 +207,25 @@ let rec draw_name (f : int list) (i : int) : unit =
 	G.sync();
 	draw_name l' (i+1) 
       | 3 -> 
-	G.draw_text ( 17*32,70+45) "F3";
+	G.draw_text ( 17*32,80+45) "F3";
 	G.sync();
 	draw_name l' (i+1)
       | 4 -> 
-	G.draw_text ( 17*32,115+45) "F4";
+	G.draw_text ( 17*32,135+45) "F4";
 	G.sync();
 	draw_name l' (i+1)
       | 5 -> 
-	G.draw_text ( 17*32,160 + 45) "F5";
+	G.draw_text ( 17*32,190 + 45) "F5";
 	G.sync();
 	draw_name l' (i+1)
       |_ -> failwith "cas impossible"
+      )
     )
-    )
+;;
 
-      
 let draw_f (t : Puzzle.t) : unit =
   let f = t.f in
-
+  
   let rec loop (l : int list) (i : int) : unit =
     match l with
     | [] -> ()
@@ -234,3 +235,54 @@ let draw_f (t : Puzzle.t) : unit =
   in
   draw_name f 1;
   loop f 30;;
+
+let set_code (st : state) (bc : int bc array) : state =
+  let s = {
+    code = bc;
+    pc = st.pc;
+    star = st.star;
+    stack = st.stack;
+    map = st.map ;
+    dir = st.dir; 
+    pos = st.pos;
+  } in
+  s;;
+
+let step (s : state) : state =
+  match (Array.get s.code s.pc) with
+  | Label x -> s
+  | Move -> (** regarder la direction du robot et
+	        bouger le robot de 1 dans la bonne direction
+		-> North x+1 y
+		-> South x-1 y
+		-> Est x y+1
+		-> West x y-1
+	    **)
+    s
+  | Rotate r -> (** 
+		    matcher la direction du robot apres avoir matcher la roation
+		    --> Left 
+		    -> North -> West
+		    -> South -> Est
+		    -> Est -> North
+		    -> West -> South
+		    --> Right
+		    -> North -> Est
+		    -> South -> West
+		    -> Est -> South
+		    -> West -> North
+		**)
+    s
+  | Call x -> (** aller chercher la premiere instruction de la fonction x **)
+    s
+  | TailCall x -> (** ? **) s
+  | Return -> (** ? **)
+    s
+  | SetColor c -> (** ? **)
+    s
+  | Jump x -> (** ? **)
+    s
+  | JumpIfNot (c,x) -> (** ? **)
+    s
+  | Exit -> (** ? **)
+    s

@@ -21,12 +21,12 @@ type 'a bc =
   | Exit
 
 (* état de la machine virtuelle Robozzle-ml *)
-type state = { pc       : offset;              (* pointeur sur l'instruction courante *)
+type state = { mutable pc       : offset;              (* pointeur sur l'instruction courante *)
                star     : int;                 (* nombres d'étoiles restantes dans la map *)
                stack    : offset list;         (* pile d'appels *)
                map      : Puzzle.map;          (* map du puzzle *)
                pos      : pos;                 (* position courante du robot *)
-               dir      : Puzzle.direction;    (* direction courante du robot *)
+              mutable dir      : Puzzle.direction;    (* direction courante du robot *)
                code     : (offset bc) array;   (* bytecode à exécuter *)
              }
 (*
@@ -35,16 +35,18 @@ val string_of_bc: ('a -> string) -> 'a bc -> string
 *)
 (* initialisation de la VM à partir d'un puzzle *)
 val init : Puzzle.t -> state
-(*
+
 (* ajout du code Robozzle-ml à exécuter dans la VM *)
-val set_code : state -> string bc array -> state
+val set_code : state -> int bc array -> state
+(*
 (* initialisation de la VM *)
 val init_stack : state -> int -> state
-
-(* fonction d'évaluation de la VM, exécute l'instruction courante puis retourne
- * le nouvel état de la VM *)
-val step : state -> state
 *)
+(* fonction d'évaluation de la VM, exécute l'instruction courante puis retourne
+
+* le nouvel état de la VM *)
+val step : state -> state
+
 (* fonctions de test pour la terminaison de la simulation *)
 val is_solved : state -> bool
 val is_out_of_map : state -> bool
