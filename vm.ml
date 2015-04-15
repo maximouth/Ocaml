@@ -16,6 +16,7 @@ type 'a bc =
 
   | Move
   | Rotate of rotation
+  | RotateIf of rotation * Puzzle.color
   | Call of 'a
   | TailCall of 'a
   | Return
@@ -123,10 +124,27 @@ let is_out_of_instr (s : state) : bool =
 
 (***  2.4  ***)
 
+let rec nb_star (m: Puzzle.map) : int =
+  let map = m.map in
+
+  let rec loop l n = 
+  match l with
+  | [] -> n
+  | Cell (b,c)::l' ->
+    (if b = true then
+	loop l' (n+1)
+     else
+	loop l' n
+    )
+  in
+  loop map 0
+;;	
+
+
 let init (t: Puzzle.t) : state =
   let s = {
     pc = 0;
-    star = 0 (* fonction pour compter le nb d'etoile *);
+    star = nb_star t.map (* fonction pour compter le nb d'etoile *);
     stack = [];
     map = t.map;
     pos = (t.cdep,t.ldep);
@@ -274,6 +292,25 @@ let step (s : state) (t : Puzzle.t) : state =
       );
       s.pc <- s.pc+1;
       s
+  | RotateIf (r,c) ->
+    let act = get_cell s.pos s.map in
+    let c' =  get_color act in
+      (if c = c' then
+	(match r,s.dir with
+	| Left, North -> s.dir <- West
+	| Left, South -> s.dir <- Est
+	| Left, Est -> s.dir <- North
+	| Left, West -> s.dir <- South
+
+	| Right, North -> s.dir <- Est
+	| Right, South -> s.dir <- West
+	| Right, Est -> s.dir <- South
+	| Right, West -> s.dir <- North
+	)
+       else ()
+      );
+    s.pc <- s.pc+1;  
+    s
   | Call x -> (** appel recursif non terminal   **)
     let f = t.f in
     s.stack <- (s.pc+1)::s.stack;

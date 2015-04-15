@@ -11,6 +11,7 @@ type offset = int
 type 'a bc =
   | Move
   | Rotate of rotation
+  | RotateIf of rotation * Puzzle.color
   | Call of 'a
   | TailCall of 'a
   | Return
