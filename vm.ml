@@ -26,8 +26,8 @@ type 'a bc =
 
 (* état de la machine virtuelle Robozzle-ml *)
 type state = {mutable pc       : offset;              (* pointeur sur l'instruction courante *)
-               star     : int;                 (* nombres d'étoiles restantes dans la map *)
-               stack    : offset list;         (* pile d'appels *)
+              mutable star     : int;                 (* nombres d'étoiles restantes dans la map *)
+              mutable stack    : offset list;         (* pile d'appels *)
               mutable map      : Puzzle.map;          (* map du puzzle *)
               mutable pos      : pos;                 (* position courante du robot *)
               mutable dir      : Puzzle.direction;    (* direction courante du robot *)
@@ -248,7 +248,7 @@ let set_code (st : state) (bc : int bc array) : state =
   } in
   s;;
 
-let step (s : state) : state =
+let step (s : state) (t : Puzzle.t) : state =
   match (Array.get s.code s.pc) with
   | Move -> 
       (match s.dir,s.pos   with
@@ -274,10 +274,32 @@ let step (s : state) : state =
       );
       s.pc <- s.pc+1;
       s
-  | Call x -> (** aller chercher la premiere instruction de la fonction x **)
+  | Call x -> (** appel recursif non terminal   **)
+    let f = t.f in
+    s.stack <- (s.pc+1)::s.stack;
+    (match x with
+    | 1 -> s.pc <- 0
+    | 2 -> s.pc <- ((List.hd f)- 1)
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+    | _ -> failwith "pas de fonction de ce nom la"
+    );
     s
-  | TailCall x -> (** ? **) s
-  | Return -> (** ? **)
+  | TailCall x -> (** appel recursif terminal **)
+    let f = t.f in
+    (match x with
+    | 1 -> s.pc <- 0
+    | 2 -> s.pc <- ((List.hd f)- 1)
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+    | _ -> failwith "pas de fonction de ce nom la"
+    );
+    s
+  | Return -> (** remonter d'un cran dans la pile **)
+    s.pc <- List.hd s.stack;
+    s.stack <- List.tl s.stack;
     s
   | SetColor c ->
     let m = s.map in
@@ -292,7 +314,7 @@ let step (s : state) : state =
 	     };
     s.pc <- s.pc+1;
     s
-  | Jump x -> (** ? **)
+  | Jump x -> (** aller chercher la premiere instruction de la fonction x **)
     s
   | JumpIfNot (c,x) -> (** ? **)
     s

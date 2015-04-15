@@ -9,7 +9,7 @@ let loop (parse:Puzzle.t) state i =
   if i <= 0 then
     state
   else
-    let state' = step state in
+    let state' = step state parse in
       G.clear();
       Vm.draw (280+(t+2) * parse.map.col) (150 + (t+2) * parse.map.ligne) t state' 0 0;    
       G.draw_text (32,13*32) parse.nom;
@@ -23,7 +23,7 @@ let main =
 
 let parse =  Puzzle.parse "./puzzles/p644.rzl" in
 let init = Vm.init parse in
-  let bt = [|Rotate Left;Move;Rotate Left;Move;Rotate Left;Move;Rotate Left;Move;Rotate Right;Move;Rotate Right;SetColor Red;Move;Rotate Right;Move;Rotate Right;Move|] in
+  let bt = [|Rotate Left;Move;Rotate Left;Move;Rotate Left;Move;Rotate Left;Move;Call 1;Rotate Right;Move;Rotate Right;SetColor Red;Move;Rotate Right;Move;Rotate Right;Move|] in
   
   Printf.printf "ligne : %d colonne %d\n" parse.map.ligne parse.map.col;
   Vm.draw (280+(t+2) * parse.map.col ) (150 + (t+2) * parse.map.ligne) t init 0 0;
