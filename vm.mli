@@ -9,7 +9,6 @@ type offset = int
 
 (* instructions de bytecode Robozzle-ml *)
 type 'a bc =
-  | Label of 'a
   | Move
   | Rotate of rotation
   | Call of 'a
@@ -25,7 +24,7 @@ type state = { mutable pc       : offset;              (* pointeur sur l'instruc
                star     : int;                 (* nombres d'étoiles restantes dans la map *)
                stack    : offset list;         (* pile d'appels *)
                map      : Puzzle.map;          (* map du puzzle *)
-               pos      : pos;                 (* position courante du robot *)
+              mutable pos      : pos;                 (* position courante du robot *)
               mutable dir      : Puzzle.direction;    (* direction courante du robot *)
                code     : (offset bc) array;   (* bytecode à exécuter *)
              }

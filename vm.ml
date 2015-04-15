@@ -13,7 +13,7 @@ type offset = int
 
 (* instructions de bytecode Robozzle-ml *)
 type 'a bc =
-  | Label of 'a
+
   | Move
   | Rotate of rotation
   | Call of 'a
@@ -29,7 +29,7 @@ type state = {mutable pc       : offset;              (* pointeur sur l'instruct
                star     : int;                 (* nombres d'étoiles restantes dans la map *)
                stack    : offset list;         (* pile d'appels *)
                map      : Puzzle.map;          (* map du puzzle *)
-               pos      : pos;                 (* position courante du robot *)
+              mutable pos      : pos;                 (* position courante du robot *)
               mutable dir      : Puzzle.direction;    (* direction courante du robot *)
                code     : offset bc array;            (* bytecode à exécuter *)
              }
@@ -178,7 +178,7 @@ let draw (offx :int) (offy : int) (csize : int) (state : state)(nb_step : int)(a
   in
   G.init offx offy csize;
   draw_map state.map;
-  G.draw_robot pos_rb state.dir 9;;
+  G.draw_robot pos_rb state.dir 3;;
 
 
 let rec draw_ligne (nb : int) (l : int) : unit =
@@ -250,35 +250,38 @@ let set_code (st : state) (bc : int bc array) : state =
 
 let step (s : state) : state =
   match (Array.get s.code s.pc) with
-  | Label x -> s
-  | Move -> (** regarder la direction du robot et
-	        bouger le robot de 1 dans la bonne direction
-		-> North x+1 y
-		-> South x-1 y
-		-> Est x y+1
-		-> West x y-1
-	    **)
-    s
-  | Rotate r -> (** 
-		    matcher la direction du robot apres avoir matcher la roation
-		    --> Left 
-		    -> North -> West
-		    -> South -> Est
-		    -> Est -> North
-		    -> West -> South
-		    --> Right
-		    -> North -> Est
-		    -> South -> West
-		    -> Est -> South
-		    -> West -> North
-		**)
-    s
+  | Move -> 
+      (match s.dir,s.pos   with
+	 | North,(x,y) -> s.pos <- (x,y-1)
+	 | South,(x,y) -> s.pos <- (x,y+1)
+	 | Est,(x,y) -> s.pos <- (x+1,y)
+	 | West,(x,y) -> s.pos <- (x-1,y)
+
+      );
+      s.pc <- s.pc+1;
+      s
+  | Rotate r ->
+      (match r,s.dir with
+	| Left, North -> s.dir <- West
+	| Left, South -> s.dir <- Est
+	| Left, Est -> s.dir <- North
+	| Left, West -> s.dir <- South
+
+	| Right, North -> s.dir <- Est
+	| Right, South -> s.dir <- West
+	| Right, Est -> s.dir <- South
+	| Right, West -> s.dir <- North
+      );
+      s.pc <- s.pc+1;
+      s
   | Call x -> (** aller chercher la premiere instruction de la fonction x **)
     s
   | TailCall x -> (** ? **) s
   | Return -> (** ? **)
     s
-  | SetColor c -> (** ? **)
+  | SetColor c ->
+    G.draw_cell s.pos c;
+    s.pc <- s.pc+1;
     s
   | Jump x -> (** ? **)
     s
