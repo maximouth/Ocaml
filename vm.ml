@@ -315,8 +315,33 @@ let step (s : state) (t : Puzzle.t) : state =
     s.pc <- s.pc+1;
     s
   | Jump x -> (** aller chercher la premiere instruction de la fonction x **)
+    (*** pas compris la difference entre Call et jump... ***)
+    let f = t.f in
+    (match x with
+    | 1 -> s.pc <- 0
+    | 2 -> s.pc <- ((List.hd f)- 1)
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+    | _ -> failwith "pas de fonction de ce nom la"
+    );
     s
-  | JumpIfNot (c,x) -> (** ? **)
+
+  | JumpIfNot (c,x) -> (** pareil que jump mais regarde si la case est de la bonne couleur avant **)
+    let act = get_cell s.pos s.map in
+    let c' =  get_color act in
+      (if c = c' then
+	  let f = t.f in
+	  (match x with
+	  | 1 -> s.pc <- 0
+	  | 2 -> s.pc <- ((List.hd f)- 1)
+	  | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
+	  | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
+	  | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+	  | _ -> failwith "pas de fonction de ce nom la"
+	  );
+       else s.pc <- s.pc +1
+      );
     s
-  | Exit -> (** ? **)
+  | Exit -> (** On est arrivé au bout du bytecode, ne plus bouger le ponteur de pile et ne rien faire **)
     s
