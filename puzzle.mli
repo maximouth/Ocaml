@@ -33,4 +33,5 @@ type t = {
 
 val split : string -> string list
 ;;
-val parse : string -> t 
+val parse : string -> t ;;
+val change_color : color -> cell list -> int -> int -> cell list -> cell list

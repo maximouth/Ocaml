@@ -23,7 +23,7 @@ type 'a bc =
 type state = { mutable pc       : offset;              (* pointeur sur l'instruction courante *)
                star     : int;                 (* nombres d'étoiles restantes dans la map *)
                stack    : offset list;         (* pile d'appels *)
-               map      : Puzzle.map;          (* map du puzzle *)
+              mutable map      : Puzzle.map;          (* map du puzzle *)
               mutable pos      : pos;                 (* position courante du robot *)
               mutable dir      : Puzzle.direction;    (* direction courante du robot *)
                code     : (offset bc) array;   (* bytecode à exécuter *)

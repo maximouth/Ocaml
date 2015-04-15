@@ -52,6 +52,17 @@ let dir_of_string (s : string) : direction =
   | _ -> failwith "mauvaise direction"
 ;;
 
+let rec change_color (c : color) (m : cell list) (i : int) (pos : int) (acc : cell list) : cell list =
+  match m with
+  | [] -> List.rev acc
+  | (Cell (b,a))::l' ->
+    ( if i = pos then
+	(List.rev acc)@(Cell (b,c))::l'
+      else
+	change_color c l' (i+1) pos ((Cell (b,a))::acc)
+    )
+;;
+    
 let rec intList_of_str (s : string list) : int list =
   match s with
   | [] -> []

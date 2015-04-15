@@ -28,7 +28,7 @@ type 'a bc =
 type state = {mutable pc       : offset;              (* pointeur sur l'instruction courante *)
                star     : int;                 (* nombres d'étoiles restantes dans la map *)
                stack    : offset list;         (* pile d'appels *)
-               map      : Puzzle.map;          (* map du puzzle *)
+              mutable map      : Puzzle.map;          (* map du puzzle *)
               mutable pos      : pos;                 (* position courante du robot *)
               mutable dir      : Puzzle.direction;    (* direction courante du robot *)
                code     : offset bc array;            (* bytecode à exécuter *)
@@ -280,7 +280,16 @@ let step (s : state) : state =
   | Return -> (** ? **)
     s
   | SetColor c ->
-    G.draw_cell s.pos c;
+    let m = s.map in
+    let x = match s.pos with
+      |(x,y) -> x in
+    let y = match s.pos with
+      |(x,y) -> y in
+    
+    s.map <- { ligne = m.ligne;
+	       col = m.col;
+	       map =Puzzle.change_color c m.map 0 (x+(y*m.col)) [];
+	     };
     s.pc <- s.pc+1;
     s
   | Jump x -> (** ? **)
