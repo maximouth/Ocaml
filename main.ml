@@ -38,7 +38,7 @@ let main =
 
 let parse =  Puzzle.parse "./puzzles/p644.rzl" in
 let init = Vm.init parse in
-  let bt = [|Move;RotateIf (Left,Green);RotateIf (Right,Red);Call 1;Exit|] in
+  let bt = [|Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;RotateIf (Right,Red);RotateIf (Right,Green);Move;Call 2;Exit|] in
   
   Printf.printf "ligne : %d colonne %d\n" parse.map.ligne parse.map.col;
   Vm.draw (280+(t+2) * parse.map.col ) (150 + (t+2) * parse.map.ligne) t init 0 0;

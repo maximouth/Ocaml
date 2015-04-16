@@ -13,6 +13,7 @@ type 'a bc =
   | Rotate of rotation
   | RotateIf of rotation * Puzzle.color
   | Call of 'a
+  | CallIf of 'a * Puzzle.color
   | TailCall of 'a
   | Return
   | SetColor of Puzzle.color

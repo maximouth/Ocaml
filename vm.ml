@@ -14,10 +14,12 @@ type offset = int
 (* instructions de bytecode Robozzle-ml *)
 type 'a bc =
 
+  
   | Move
   | Rotate of rotation
   | RotateIf of rotation * Puzzle.color
   | Call of 'a
+  | CallIf of 'a * Puzzle.color
   | TailCall of 'a
   | Return
   | SetColor of Puzzle.color
@@ -316,13 +318,32 @@ let step (s : state) (t : Puzzle.t) : state =
     s.stack <- (s.pc+1)::s.stack;
     (match x with
     | 1 -> s.pc <- 0
-    | 2 -> s.pc <- ((List.hd f)- 1)
-    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
-    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
-    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+    | 2 -> s.pc <- ((List.hd f))
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1))
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) 
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) 
     | _ -> failwith "pas de fonction de ce nom la"
     );
     s
+  | CallIf (x,c) ->
+    let act = get_cell s.pos s.map in
+    let c' =  get_color act in
+    (if c = c' then
+	let f = t.f in
+	s.stack <- (s.pc+1)::s.stack;
+	(match x with
+	| 1 -> s.pc <- 0
+	| 2 -> s.pc <- ((List.hd f))
+	| 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) 
+	| 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) 
+	| 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) 
+	| _ -> failwith "pas de fonction de ce nom la"
+	)	
+     else
+        s.pc <- s.pc +1
+    );
+    s
+
   | TailCall x -> (** appel recursif terminal **)
     let f = t.f in
     (match x with
@@ -371,10 +392,10 @@ let step (s : state) (t : Puzzle.t) : state =
 	  let f = t.f in
 	  (match x with
 	  | 1 -> s.pc <- 0
-	  | 2 -> s.pc <- ((List.hd f)- 1)
-	  | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
-	  | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
-	  | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+	  | 2 -> s.pc <- (List.hd f)
+	  | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) 
+	  | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) 
+	  | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) 
 	  | _ -> failwith "pas de fonction de ce nom la"
 	  );
        else s.pc <- s.pc +1
