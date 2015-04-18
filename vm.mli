@@ -10,6 +10,7 @@ type offset = int
 (* instructions de bytecode Robozzle-ml *)
 type 'a bc =
   | Move
+  | MoveIf of Puzzle.color
   | Rotate of rotation
   | RotateIf of rotation * Puzzle.color
   | Call of 'a

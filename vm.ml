@@ -16,6 +16,7 @@ type 'a bc =
 
   
   | Move
+  | MoveIf of Puzzle.color
   | Rotate of rotation
   | RotateIf of rotation * Puzzle.color
   | Call of 'a
@@ -201,14 +202,15 @@ let draw (offx :int) (offy : int) (csize : int) (state : state)(nb_step : int)(a
   G.draw_robot pos_rb state.dir 3;;
 
 
-let rec draw_ligne (nb : int) (l : int) : unit =
-  match nb with
-  | 0 -> ()
-  | n ->
-    G.draw_cell ((18*32) + (32*nb), l) Empty;
-    G.sync();
-    draw_ligne (nb-1) l;;
+let rec draw_ligne (nb : int) (l : int)  : unit =
 
+    match nb with
+    | 0 -> ()
+    | nb ->
+      G.draw_cell ((18*32) + (32*nb), l) Empty;
+      G.sync();
+      draw_ligne (nb-1) l
+;;
 
 let rec draw_name (f : int list) (i : int) : unit =
   match f with
@@ -243,7 +245,7 @@ let rec draw_name (f : int list) (i : int) : unit =
     )
 ;;
 
-let draw_f (t : Puzzle.t) : unit =
+let draw_f (t : Puzzle.t)  : unit =
   let f = t.f in
   
   let rec loop (l : int list) (i : int) : unit =
@@ -254,7 +256,9 @@ let draw_f (t : Puzzle.t) : unit =
       loop l' (i+55)
   in
   draw_name f 1;
-  loop f 30;;
+  loop f 30
+;;
+
 
 let set_code (st : state) (bc : int bc array) : state =
   let s = {
@@ -278,8 +282,21 @@ let step (s : state) (t : Puzzle.t) : state =
 	 | West,(x,y) -> s.pos <- (x-1,y)
 
       );
-      s.pc <- s.pc+1;
-      s
+    let m = s.map in
+    let x = match s.pos with
+      |(x,y) -> x in
+    let y = match s.pos with
+      |(x,y) -> y in
+    
+    s.map <- { ligne = m.ligne;
+	       col = m.col;
+	       map =Puzzle.retire_bomb m.map 0 (x+(y*m.col)) [];
+	     };
+    s.star <-  nb_star s.map;
+    s.pc <- s.pc+1;
+    s
+  | MoveIf c -> (****  COINCÉ ICI..   ****)
+    s
   | Rotate r ->
       (match r,s.dir with
 	| Left, North -> s.dir <- West
