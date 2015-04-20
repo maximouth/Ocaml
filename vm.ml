@@ -198,6 +198,7 @@ let draw (offx :int) (offy : int) (csize : int) (state : state)(nb_step : int)(a
     | (x,y) ->(32*x,32*y)
   in
   G.init offx offy csize;
+  G.clear();
   draw_map state.map;
   G.draw_robot pos_rb state.dir 3;;
 
@@ -221,23 +222,23 @@ let rec draw_name (f : int list) (i : int) : unit =
     | _ ->
       (match i with
       | 1 ->
-	G.draw_text ( 17*32,10) "F1";
+	G.draw_text4 ( 17*32,30) "F1";
 	G.sync();
 	draw_name l' (i+1)
       | 2 -> 
-	G.draw_text ( 17*32,25+45) "F2" ;
+	G.draw_text4 ( 17*32,45+40) "F2" ;
 	G.sync();
 	draw_name l' (i+1) 
       | 3 -> 
-	G.draw_text ( 17*32,80+45) "F3";
+	G.draw_text4 ( 17*32,80+50) "F3";
 	G.sync();
 	draw_name l' (i+1)
       | 4 -> 
-	G.draw_text ( 17*32,135+45) "F4";
+	G.draw_text4 ( 17*32,135+50) "F4";
 	G.sync();
 	draw_name l' (i+1)
       | 5 -> 
-	G.draw_text ( 17*32,190 + 45) "F5";
+	G.draw_text4 ( 17*32,190 + 50) "F5";
 	G.sync();
 	draw_name l' (i+1)
       |_ -> failwith "cas impossible"

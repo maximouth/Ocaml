@@ -9,7 +9,7 @@ type pos = int * int
  * - c : taille en pixels d'une cellule (carrée)
  *)
 val init : int -> int -> int -> unit
-
+  
 (* fermeture de l'affichage graphique *)
 val quit : unit -> unit
 
@@ -31,8 +31,12 @@ val draw_arrow  : pos -> Puzzle.direction -> unit
 val draw_call   : pos -> string -> unit
 (* dessiner du texte *)
 val draw_text   : pos -> string -> unit
-(* police plus petite *)
+(* texte en rouge *)
 val draw_text2   : pos -> string -> unit
+(* texte en violet *)
+val draw_text3   : pos -> string -> unit
+(* texte en blanc *)
+val draw_text4   : pos -> string -> unit
 
 (* synchronisation de l'affichage *)
 val sync  : unit -> unit

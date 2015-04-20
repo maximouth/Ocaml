@@ -9,7 +9,11 @@ let cell_size = ref 32
 let lang_cell_size = 32
 
 let font = ref (Obj.magic None)
+let font2 = ref (Obj.magic None)
+let font3 = ref (Obj.magic None)
+  
 
+  
 let init (w : int) (h : int) (c : int) : unit =
   Sdl.init [`VIDEO];
   screen := Sdlvideo.set_video_mode ~w:w ~h:h ~bpp:32 [`DOUBLEBUF ; `HWSURFACE];
@@ -37,14 +41,18 @@ let init (w : int) (h : int) (c : int) : unit =
     !sprite_cursor
     (Sdlvideo.map_RGB !sprite_cursor Sdlvideo.yellow);
   Sdlttf.init ();
-  font := Sdlttf.open_font "font.ttf" 50
-  
+  font := Sdlttf.open_font "font.ttf" 50;
+  font2 := Sdlttf.open_font "font.ttf" 30;
+  font3 := Sdlttf.open_font "font.ttf" 40;
+  Sdlttf.set_font_style !font [Sdlttf.ITALIC;Sdlttf.UNDERLINE];
+  Sdlttf.set_font_style !font2 [Sdlttf.ITALIC;Sdlttf.UNDERLINE]
+
 
 let quit () : unit =
   Sdl.quit ()
 
 let clear () : unit =
-  Sdlvideo.fill_rect !screen (Sdlvideo.map_RGB !screen Sdlvideo.black)
+  Sdlvideo.fill_rect !screen (Sdlvideo.map_RGB !screen Sdlvideo.green)
 
 let blit_sprite ((x,y) : pos) (idx : int) (idy : int) : unit =
   Sdlvideo.blit_surface
@@ -114,7 +122,7 @@ let draw_call ((x,y) : pos) (f : string) : unit =
     ()
 
 let draw_text ((x,y) : pos) (s : string) : unit =
-  let surf = Sdlttf.render_text_solid !font s Sdlvideo.yellow  in
+  let surf = Sdlttf.render_text_blended !font s Sdlvideo.yellow  in
   Sdlvideo.blit_surface
     ~src:surf
     ~dst:!screen
@@ -122,13 +130,30 @@ let draw_text ((x,y) : pos) (s : string) : unit =
     ()
 
 let draw_text2 ((x,y) : pos) (s : string) : unit =
-  let surf = Sdlttf.render_text_solid !font s Sdlvideo.red  in
+  let surf = Sdlttf.render_text_shaded !font3 s Sdlvideo.red Sdlvideo.cyan   in
   Sdlvideo.blit_surface
     ~src:surf
     ~dst:!screen
     ~dst_rect:(Sdlvideo.rect x y 0 0)
     ()
 
+    
+let draw_text3 ((x,y) : pos) (s : string) : unit =
+  let surf = Sdlttf.render_text_shaded !font s Sdlvideo.magenta Sdlvideo.red  in
+  Sdlvideo.blit_surface
+    ~src:surf
+    ~dst:!screen
+    ~dst_rect:(Sdlvideo.rect x y 100 100)
+    ()
+    
+    
+let draw_text4 ((x,y) : pos) (s : string) : unit =
+  let surf = Sdlttf.render_text_shaded !font2 s Sdlvideo.white Sdlvideo.cyan  in
+  Sdlvideo.blit_surface
+    ~src:surf
+    ~dst:!screen
+    ~dst_rect:(Sdlvideo.rect x y 100 100)
+    ()
     
 let sync () : unit =
   Sdlvideo.flip !screen

@@ -2,9 +2,10 @@ open Puzzle
 open Vm
 
 let t = 30  
-
+  
   
 let loop (parse:Puzzle.t) state  =
+ 
   let rec loop' state  =
     if Array.get state.code state.pc = Exit then
       (
@@ -62,6 +63,9 @@ let loop (parse:Puzzle.t) state  =
 	G.draw_call (22*32,85) "f2";
 
 	(* nb star restante *)
+	G.draw_text2 (16*32,390 ) "Nb bombe : ";
+	G.draw_text2 (23*32,390 ) (string_of_int state'.star);
+
 	
 	G.sync();
 	G.delay 250;
@@ -82,8 +86,8 @@ let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2
 
   G.clear();
   G.sync();
-  G.draw_text (190,175) "BOMBERZZLE";
-  G.draw_text (180,193) "--------------------";
+  G.draw_text3 (190,175) "BOMBERZZLE";
+  G.draw_text3 (180,193) "--------------------";
 
   (*ligne du haut *)
   G.draw_robot (150,150) North 1;
@@ -154,8 +158,8 @@ let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2
   G.draw_robot (625, 350) West 2;
 
   (* High Score *)
-  G.draw_text2 (240, 370) "High Score";
-  G.draw_text2 (205, 430) "00000000000";
+  G.draw_text2 (290, 370) "High Score";
+  G.draw_text2 (255, 430) "00000000000";
   
   G.sync();
   G.delay(4000);
@@ -184,6 +188,11 @@ let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2
 	G.draw_arrow (21*32,85) North;
 	G.draw_call (22*32,85) "f2";
 
+
+	(* nb star restante *)
+	G.draw_text2 (16*32,390 ) "Nb bombe : ";
+	G.draw_text2 (23*32,390 ) (string_of_int init.star);
+	
   G.sync();
   G.delay 1000;
   let state = set_code init bt in 
