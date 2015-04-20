@@ -120,6 +120,15 @@ let draw_text ((x,y) : pos) (s : string) : unit =
     ~dst:!screen
     ~dst_rect:(Sdlvideo.rect x y 0 0)
     ()
+
+let draw_text2 ((x,y) : pos) (s : string) : unit =
+  let surf = Sdlttf.render_text_solid !font s Sdlvideo.red  in
+  Sdlvideo.blit_surface
+    ~src:surf
+    ~dst:!screen
+    ~dst_rect:(Sdlvideo.rect x y 0 0)
+    ()
+
     
 let sync () : unit =
   Sdlvideo.flip !screen

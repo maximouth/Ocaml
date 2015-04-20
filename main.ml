@@ -3,7 +3,6 @@ open Vm
 
 let t = 30  
 
-
   
 let loop (parse:Puzzle.t) state  =
   let rec loop' state  =
@@ -61,6 +60,8 @@ let loop (parse:Puzzle.t) state  =
 	G.draw_arrow (20*32,85) Est;
 	G.draw_arrow (21*32,85) North;
 	G.draw_call (22*32,85) "f2";
+
+	(* nb star restante *)
 	
 	G.sync();
 	G.delay 250;
@@ -83,8 +84,81 @@ let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2
   G.sync();
   G.draw_text (190,175) "BOMBERZZLE";
   G.draw_text (180,193) "--------------------";
+
+  (*ligne du haut *)
+  G.draw_robot (150,150) North 1;
+  G.draw_robot (180,150) North 2;
+  G.draw_robot (210,150) North 3;
+  G.draw_robot (240,150) North 1;
+  G.draw_robot (270,150) North 2;
+  G.draw_robot (300,150) North 3;
+  G.draw_robot (330,150) North 1;
+  G.draw_robot (360,150) North 2;
+  G.draw_robot (390,150) North 3;
+  G.draw_robot (420,150) North 1;
+  G.draw_robot (450,150) North 2;
+  G.draw_robot (480,150) North 3;
+  G.draw_robot (510,150) North 1;
+  G.draw_robot (540,150) North 2;
+  G.draw_robot (570,150) North 3;
+  G.draw_robot (600,150) North 1;
+
+  (* ligne de gauche *)
+  G.draw_robot (150,180) West 1;
+  G.draw_robot (150,210) West 2;
+
+  (* ligne de droite *)
+  G.draw_robot (600,180) Est 1;
+  G.draw_robot (600,210) Est 1;
+
+  
+  (* ligne du bas*)
+  G.draw_robot (150,235) South 1;
+  G.draw_robot (180,235) South 2;
+  G.draw_robot (210,235) South 3;
+  G.draw_robot (240,235) South 1;
+  G.draw_robot (270,235) South 2;
+  G.draw_robot (300,235) South 3;
+  G.draw_robot (330,235) South 1;
+  G.draw_robot (360,235) South 2;
+  G.draw_robot (390,235) South 3;
+  G.draw_robot (420,235) South 1;
+  G.draw_robot (450,235) South 2;
+  G.draw_robot (480,235) South 3;
+  G.draw_robot (510,235) South 1;
+  G.draw_robot (540,235) South 2;
+  G.draw_robot (570,235) South 3;
+  G.draw_robot (600,235) South 1;
+  
+  (* Ligne bombes *)
+  G.draw_robot (130, 350) Est 3;
+  G.draw_star (155,350);
+  G.draw_star (180,350);
+  G.draw_star (205,350);
+  G.draw_star (230,350);
+  G.draw_star (255,350);
+  G.draw_star (280,350);
+  G.draw_star (305,350);
+  G.draw_star (330,350);
+  G.draw_star (355,350);
+  G.draw_star (380,350);
+  G.draw_star (405,350);
+  G.draw_star (430,350);
+  G.draw_star (455,350);
+  G.draw_star (480,350);
+  G.draw_star (505,350);
+  G.draw_star (530,350);
+  G.draw_star (555,350);
+  G.draw_star (580,350);
+  G.draw_star (605,350);
+  G.draw_robot (625, 350) West 2;
+
+  (* High Score *)
+  G.draw_text2 (240, 370) "High Score";
+  G.draw_text2 (205, 430) "00000000000";
+  
   G.sync();
-  G.delay(2500);
+  G.delay(4000);
   G.clear();
   G.sync();
 

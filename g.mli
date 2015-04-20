@@ -31,6 +31,8 @@ val draw_arrow  : pos -> Puzzle.direction -> unit
 val draw_call   : pos -> string -> unit
 (* dessiner du texte *)
 val draw_text   : pos -> string -> unit
+(* police plus petite *)
+val draw_text2   : pos -> string -> unit
 
 (* synchronisation de l'affichage *)
 val sync  : unit -> unit
