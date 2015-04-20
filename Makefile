@@ -11,11 +11,11 @@ endif
 
 
 LIBS = $(SDL_DIR)/sdl.cma $(SDL_DIR)/sdlttf.cma $(SDL_DIR)/sdlgfx.cma $(SDL_DIR)/sdlloader.cma $(SDL_DIR)/sdltimer.cma bigarray.cma
-TARGET = robozzle-ml
+TARGET = bomberzzle-ml
 
 all: $(TARGET)
 
-robozzle-ml: puzzle.cmo puzzle.cmi g.cmo g.cmi vm.cmo vm.cmi main.cmo  
+bomberzzle-ml: puzzle.cmo puzzle.cmi g.cmo g.cmi vm.cmo vm.cmi main.cmo  
 	$(OL) -custom -o $@ -I $(SDL_DIR)  $(LIBS) puzzle.cmo g.cmo vm.cmo main.cmo
 
 sdltimer.cmo: sdltimer.ml sdltimer.cmi

@@ -296,7 +296,35 @@ let step (s : state) (t : Puzzle.t) : state =
     s.pc <- s.pc+1;
     s
   | MoveIf c -> (****  COINCÉ ICI..   ****)
-    s
+    let act = get_cell s.pos s.map in
+    let c' =  get_color act in
+    if c = c' then
+      (
+	(match s.dir,s.pos   with
+	| North,(x,y) -> s.pos <- (x,y-1)
+	| South,(x,y) -> s.pos <- (x,y+1)
+	| Est,(x,y) -> s.pos <- (x+1,y)
+	| West,(x,y) -> s.pos <- (x-1,y)
+	  
+	);
+	let m = s.map in
+	let x = match s.pos with
+	  |(x,y) -> x in
+	let y = match s.pos with
+	  |(x,y) -> y in
+	
+	s.map <- { ligne = m.ligne;
+		   col = m.col;
+		   map =Puzzle.retire_bomb m.map 0 (x+(y*m.col)) [];
+		 };
+	
+	s.star <-  nb_star s.map;
+	s.pc <- s.pc+1;
+	s
+      )
+    else(
+      s.pc <- s.pc+1;
+      s)
   | Rotate r ->
       (match r,s.dir with
 	| Left, North -> s.dir <- West
@@ -335,10 +363,10 @@ let step (s : state) (t : Puzzle.t) : state =
     s.stack <- (s.pc+1)::s.stack;
     (match x with
     | 1 -> s.pc <- 0
-    | 2 -> s.pc <- ((List.hd f))
-    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1))
-    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) 
-    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) 
+    | 2 -> s.pc <- ((List.hd f)+1)
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1) +1)
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) +1) 
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3) +1) 
     | _ -> failwith "pas de fonction de ce nom la"
     );
     s
@@ -350,10 +378,10 @@ let step (s : state) (t : Puzzle.t) : state =
 	s.stack <- (s.pc+1)::s.stack;
 	(match x with
 	| 1 -> s.pc <- 0
-	| 2 -> s.pc <- ((List.hd f))
-	| 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) 
-	| 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) 
-	| 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) 
+	| 2 -> s.pc <- ((List.hd f) +1)
+	| 3 -> s.pc <- ((List.hd f) + (List.nth f 1) +1) 
+	| 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) +1) 
+	| 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3) +1) 
 	| _ -> failwith "pas de fonction de ce nom la"
 	)	
      else
@@ -365,10 +393,10 @@ let step (s : state) (t : Puzzle.t) : state =
     let f = t.f in
     (match x with
     | 1 -> s.pc <- 0
-    | 2 -> s.pc <- ((List.hd f)- 1)
-    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
-    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
-    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+    | 2 -> s.pc <- ((List.hd f)+ 1)
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) +1
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) +1
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) +1
     | _ -> failwith "pas de fonction de ce nom la"
     );
     s
@@ -394,10 +422,10 @@ let step (s : state) (t : Puzzle.t) : state =
     let f = t.f in
     (match x with
     | 1 -> s.pc <- 0
-    | 2 -> s.pc <- ((List.hd f)- 1)
-    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) -1
-    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) -1
-    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) -1
+    | 2 -> s.pc <- ((List.hd f)+ 1)
+    | 3 -> s.pc <- ((List.hd f) + (List.nth f 1)) +1
+    | 4 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2)) +1
+    | 5 -> s.pc <- ((List.hd f) + (List.nth f 1) +(List.nth f 2) + (List.nth f 3)) +1
     | _ -> failwith "pas de fonction de ce nom la"
     );
     s

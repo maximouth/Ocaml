@@ -45,6 +45,23 @@ let loop (parse:Puzzle.t) state  =
 	Vm.draw (280+(t+2) * parse.map.col) (150 + (t+2) * parse.map.ligne) t state' 0 0;    
 	G.draw_text (32,13*32) parse.nom;
 	Vm.draw_f parse;
+
+	(* F1  *)
+	G.draw_arrow (19*32,30) North;
+	G.draw_cell (20*32,30) Green;
+	G.draw_arrow (20*32,30) West;
+	G.draw_cell (21*32,30) Red;
+	G.draw_call (21*32,30) "f2";
+	G.draw_call (22*32,30) "f1";
+
+	(* F2  *)
+	G.draw_cell (19*32,85) Red;
+	G.draw_arrow (19*32,85) Est;
+	G.draw_cell (20*32,85) Green;
+	G.draw_arrow (20*32,85) Est;
+	G.draw_arrow (21*32,85) North;
+	G.draw_call (22*32,85) "f2";
+	
 	G.sync();
 	G.delay 250;
 	loop' state'  
@@ -55,7 +72,7 @@ let main =
   
 let parse =  Puzzle.parse "./puzzles/p644.rzl" in
 let init = Vm.init parse in
-  let bt = [|Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;RotateIf (Right,Red);RotateIf (Right,Green);Move;Call 2;Exit|] in
+let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2*)RotateIf (Right,Red);RotateIf (Right,Green);Move;Call 2;Exit|] in
   Printf.printf "ligne : %d colonne %d\n" parse.map.ligne parse.map.col;
 
   
@@ -65,6 +82,7 @@ let init = Vm.init parse in
   G.clear();
   G.sync();
   G.draw_text (190,175) "BOMBERZZLE";
+  G.draw_text (180,193) "--------------------";
   G.sync();
   G.delay(2500);
   G.clear();
@@ -76,6 +94,22 @@ let init = Vm.init parse in
   G.draw_text (32,13*32) parse.nom;
   G.sync();
   Vm.draw_f parse;
+	(* F1  *)
+	G.draw_arrow (19*32,30) North;
+	G.draw_cell (20*32,30) Green;
+	G.draw_arrow (20*32,30) West;
+	G.draw_cell (21*32,30) Red;
+	G.draw_call (21*32,30) "f2";
+	G.draw_call (22*32,30) "f1";
+
+	(* F2  *)
+	G.draw_cell (19*32,85) Red;
+	G.draw_arrow (19*32,85) Est;
+	G.draw_cell (20*32,85) Green;
+	G.draw_arrow (20*32,85) Est;
+	G.draw_arrow (21*32,85) North;
+	G.draw_call (22*32,85) "f2";
+
   G.sync();
   G.delay 1000;
   let state = set_code init bt in 
