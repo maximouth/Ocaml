@@ -295,7 +295,7 @@ let step (s : state) (t : Puzzle.t) : state =
     s.star <-  nb_star s.map;
     s.pc <- s.pc+1;
     s
-  | MoveIf c -> (****  COINCÉ ICI..   ****)
+  | MoveIf c -> 
     let act = get_cell s.pos s.map in
     let c' =  get_color act in
     if c = c' then
