@@ -198,7 +198,7 @@ let draw (offx :int) (offy : int) (csize : int) (state : state)(nb_step : int)(a
     | (x,y) ->(32*x,32*y)
   in
   G.init offx offy csize;
-  G.clear();
+  G.fond_cyan();
   draw_map state.map;
   G.draw_robot pos_rb state.dir 3;;
 

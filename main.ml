@@ -63,7 +63,7 @@ let loop (parse:Puzzle.t) state  =
 	G.draw_call (22*32,85) "f2";
 
 	(* nb star restante *)
-	G.draw_text2 (16*32,390 ) "Nb bombe : ";
+	G.draw_text2 (15*32,390 ) "Nb bombe : ";
 	G.draw_text2 (23*32,390 ) (string_of_int state'.star);
 
 	
@@ -190,7 +190,7 @@ let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2
 
 
 	(* nb star restante *)
-	G.draw_text2 (16*32,390 ) "Nb bombe : ";
+	G.draw_text2 (15*32,390 ) "Nb bombe : ";
 	G.draw_text2 (23*32,390 ) (string_of_int init.star);
 	
   G.sync();

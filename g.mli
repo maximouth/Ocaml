@@ -15,6 +15,7 @@ val quit : unit -> unit
 
 (* effacement de la fenêtre *)
 val clear : unit -> unit
+val fond_cyan : unit -> unit
 
 (* dessiner une cellule de la couleur donnée à la position donnée *)
 val draw_cell   : pos -> Puzzle.color -> unit

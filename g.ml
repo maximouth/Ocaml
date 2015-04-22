@@ -52,8 +52,12 @@ let quit () : unit =
   Sdl.quit ()
 
 let clear () : unit =
-  Sdlvideo.fill_rect !screen (Sdlvideo.map_RGB !screen Sdlvideo.green)
+  Sdlvideo.fill_rect !screen (Sdlvideo.map_RGB !screen Sdlvideo.black)
 
+let fond_cyan  () : unit =
+  Sdlvideo.fill_rect !screen (Sdlvideo.map_RGB !screen Sdlvideo.cyan)
+
+    
 let blit_sprite ((x,y) : pos) (idx : int) (idy : int) : unit =
   Sdlvideo.blit_surface
     ~src:!sprites
