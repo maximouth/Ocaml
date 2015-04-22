@@ -158,8 +158,8 @@ let bt = [|(*F1*)Move;RotateIf (Left,Green);CallIf (2,Red);Call 1;Exit;Exit;(*F2
   G.draw_robot (625, 350) West 2;
 
   (* High Score *)
-  G.draw_text2 (290, 370) "High Score";
-  G.draw_text2 (255, 430) "00000000000";
+  G.draw_text2 (310, 380) "High Score";
+  G.draw_text2 (295, 430) "00000000000";
   
   G.sync();
   G.delay(4000);

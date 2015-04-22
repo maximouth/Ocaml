@@ -43,7 +43,7 @@ let init (w : int) (h : int) (c : int) : unit =
   Sdlttf.init ();
   font := Sdlttf.open_font "font.ttf" 50;
   font2 := Sdlttf.open_font "font.ttf" 30;
-  font3 := Sdlttf.open_font "font.ttf" 40;
+  font3 := Sdlttf.open_font "2TOON.ttf" 40;
   Sdlttf.set_font_style !font [Sdlttf.ITALIC;Sdlttf.UNDERLINE];
   Sdlttf.set_font_style !font2 [Sdlttf.ITALIC;Sdlttf.UNDERLINE]
 
@@ -126,7 +126,7 @@ let draw_call ((x,y) : pos) (f : string) : unit =
     ()
 
 let draw_text ((x,y) : pos) (s : string) : unit =
-  let surf = Sdlttf.render_text_blended !font s Sdlvideo.yellow  in
+  let surf = Sdlttf.render_text_shaded !font s Sdlvideo.yellow Sdlvideo.black  in
   Sdlvideo.blit_surface
     ~src:surf
     ~dst:!screen
@@ -152,7 +152,7 @@ let draw_text3 ((x,y) : pos) (s : string) : unit =
     
     
 let draw_text4 ((x,y) : pos) (s : string) : unit =
-  let surf = Sdlttf.render_text_shaded !font2 s Sdlvideo.white Sdlvideo.cyan  in
+  let surf = Sdlttf.render_text_shaded !font2 s Sdlvideo.white Sdlvideo.black  in
   Sdlvideo.blit_surface
     ~src:surf
     ~dst:!screen
